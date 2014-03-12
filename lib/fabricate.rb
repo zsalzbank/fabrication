@@ -26,7 +26,12 @@ class Fabricate
 
   def self.create(name, overrides={}, &block)
     fail_if_initializing(name)
-    schematic(name).fabricate(overrides, &block)
+    schematic(name).fabricate(false, overrides, &block)
+  end
+
+  def self.create!(name, overrides={}, &block)
+    fail_if_initializing(name)
+    schematic(name).fabricate(true, overrides, &block)
   end
 
   def self.sequence(name=Fabrication::Sequencer::DEFAULT, start=nil, &block)

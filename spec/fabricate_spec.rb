@@ -33,6 +33,15 @@ describe Fabricate do
     end
   end
 
+  describe ".create!" do
+    it "persists the forced object and its children within a build stack" do
+      object = Fabricate.build(:child_ruby_object_with_forced_parent)
+      expect(object).not_to be_persisted
+      expect(object.parent_ruby_object).to be_persisted
+      expect(object.parent_ruby_object.other_child).to be_persisted
+    end
+  end
+
   describe ".to_params", depends_on: :active_record do
     subject { Fabricate.to_params(:parent_active_record_model_with_children) }
 

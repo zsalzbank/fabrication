@@ -61,8 +61,11 @@ class Fabrication::Schematic::Definition
     end
   end
 
-  def fabricate(overrides={}, &block)
-    if Fabrication.manager.build_stack.any?
+  def fabricate(forced=false, overrides={}, &block)
+    force_status = Fabrication.manager.force_creation
+    Fabrication.manager.force_creation = forced unless force_status
+
+    result = if !Fabrication.manager.force_creation and Fabrication.manager.build_stack.any?
       build(overrides, &block)
     elsif Fabrication.manager.to_params_stack.any?
       to_params(overrides, &block)
@@ -71,6 +74,9 @@ class Fabrication::Schematic::Definition
         generator.new(klass).create(attributes, callbacks)
       end
     end
+
+    Fabrication.manager.force_creation = force_status
+    result
   end
 
   def to_params(overrides={}, &block)
