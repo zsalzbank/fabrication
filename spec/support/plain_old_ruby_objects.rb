@@ -18,7 +18,8 @@ class ParentRubyObject < Persistable
     :string_field,
     :false_field,
     :id,
-    :extra_fields
+    :extra_fields,
+    :other_child
   attr_writer :child_ruby_objects
 
   def initialize
@@ -28,6 +29,7 @@ class ParentRubyObject < Persistable
 
   def save!
     super
+    other_child.save! if other_child
     child_ruby_objects.each(&:save!)
   end
 

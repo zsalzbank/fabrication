@@ -6,6 +6,7 @@ Fabricator(:parent_ruby_object) do
   string_field 'content'
   false_field false
   extra_fields { Hash.new }
+  other_child
   before_validation do |object, transients|
     object.extra_fields[:transient_value] = transients[:placeholder]
   end
@@ -19,8 +20,16 @@ Fabricator(:child_ruby_object) do
   number_field 10
 end
 
+Fabricator(:other_child, from: :child_ruby_object) do
+  number_field 10
+end
+
 Fabricator(:child_ruby_object_with_parent, from: :child_ruby_object) do
   parent_ruby_object
+end
+
+Fabricator(:child_ruby_object_with_forced_parent, from: :child_ruby_object) do
+  parent_ruby_object { Fabricate.create!(:parent_ruby_object) }
 end
 
 Fabricator('namespaced_classes/ruby_object')

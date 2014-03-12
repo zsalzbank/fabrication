@@ -3,7 +3,10 @@ require 'singleton'
 class Fabrication::Schematic::Manager
   include Singleton
 
+  attr_accessor :force_creation
+
   def preinitialize
+    @force_creation = false
     @initializing = true
     clear
   end

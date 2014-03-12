@@ -101,7 +101,7 @@ describe Fabrication::Generator::Base do
         end
 
         context "with override" do
-          subject { schematic.fabricate(arg1: 30) }
+          subject { schematic.fabricate(false, arg1: 30) }
           it "saves the return value of the block as instance" do
             subject.arg1.should == 30
             subject.arg2.should == 40
